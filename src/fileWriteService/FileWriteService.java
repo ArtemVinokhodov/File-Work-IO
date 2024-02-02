@@ -1,5 +1,6 @@
 package fileWriteService;
 
+import fileReadService.FileReadService;
 import utils.FilePath;
 
 import java.io.File;
@@ -9,23 +10,30 @@ import java.io.IOException;
 
 public class FileWriteService {
     public static File file;
+    public String newFilename;
+    FilePath filePath = new FilePath();
+    FileReadService fileReadService = new FileReadService();
 
-    public static void createFile(String customFileName, String customContentText) throws IOException {
+    public void createFile(String customFileName, String customContentText) throws IOException {
         try {
-            file = new File(FilePath.BASE_URL + customFileName + ".txt");
-            file.createNewFile();
-            System.out.println("Created " + FilePath.BASE_URL);
+            file = new File(filePath.BASE_URL + customFileName + ".txt");
+            if(file.createNewFile()) {
+                System.out.println("Created " + filePath.BASE_URL + customFileName + ".txt");
+            } else {
+                System.out.println("File already exists: " + file.getPath());
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         try (FileOutputStream fileOutputStream = new FileOutputStream(file.getPath())) {
-            String data = customContentText;
-            byte[] bytes = data.getBytes();
+            byte[] bytes = customContentText.getBytes();
             fileOutputStream.write(bytes);
-            System.out.println("Text added");
+            newFilename = customContentText + ".txt";
+            System.out.println("New Text added");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        fileReadService.getFile(newFilename);
     }
 }
