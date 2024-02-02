@@ -29,7 +29,7 @@ public class FileWriteService {
         try (FileOutputStream fileOutputStream = new FileOutputStream(file.getPath())) {
             byte[] bytes = customContentText.getBytes();
             fileOutputStream.write(bytes);
-            newFilename = customContentText + ".txt";
+            newFilename = customFileName + ".txt";
             System.out.println("New Text added");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
